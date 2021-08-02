@@ -1,5 +1,14 @@
 <template>
   <div class="wrapper">
+      <v-overlay :value="loading_dailog" style="z-index: 9999" >
+            <v-progress-circular
+
+              indeterminate
+              :size="70"
+              :width="7"
+              color="green"
+            ></v-progress-circular>
+            </v-overlay>
     <br />
     <v-row>
       <v-container>
@@ -48,6 +57,7 @@ export default {
     return {
       image: '',
       state: false,
+      loading_dailog: false,
       img_res: '',
       imgBase64: '',
       data: {
@@ -76,6 +86,7 @@ export default {
       this.image = event.target.result
     },
     upload () {
+      this.loading_dailog = true
       this.img_res = this.image
       this.imgBase64 = this.image.split(',')[1]
       this.axios
@@ -93,6 +104,7 @@ export default {
           }
           // document.getElementById('img').setAttribute('src', this.img_res)
           this.state = true
+          this.loading_dailog = false
 
           // document.getElementById('img').style.position = 'absolute'
           // document.getElementById('img').style.border = '5px solid #ffffff'
@@ -100,6 +112,11 @@ export default {
           // document.getElementById('img').style.left = this.css.left + 'px'
           // document.getElementById('img').style.right = this.css.right + 'px'
           // document.getElementById('img').style.top = this.css.top + 'px'
+        }).catch(function (error) {
+          alert('error')
+          this.loading_dailog = false
+
+          console.log(error)
         })
     }
   }
